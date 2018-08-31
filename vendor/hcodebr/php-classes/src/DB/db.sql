@@ -14,9 +14,9 @@ USE db_ecommerce;
 --
 DROP TABLE IF EXISTS tb_ordersstatus;
 CREATE TABLE tb_ordersstatus (
-  idstatus   int(11)     NOT NULL AUTO_INCREMENT,
-  desstatus  varchar(32) NOT NULL,
-  dtregister timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  idstatus   INT(11)     NOT NULL AUTO_INCREMENT,
+  desstatus  VARCHAR(32) NOT NULL,
+  dtregister TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (idstatus)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 DEFAULT COLLATE utf8_general_ci;
 
@@ -32,9 +32,9 @@ UNLOCK TABLES;
 --
 DROP TABLE IF EXISTS tb_categories;
 CREATE TABLE tb_categories (
-  idcategory  int(11)     NOT NULL AUTO_INCREMENT,
-  descategory varchar(32) NOT NULL,
-  dtregister  timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  idcategory  INT(11)     NOT NULL AUTO_INCREMENT,
+  descategory VARCHAR(32) NOT NULL,
+  dtregister  TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (idcategory)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 DEFAULT COLLATE utf8_general_ci;
 
@@ -43,15 +43,15 @@ CREATE TABLE tb_categories (
 --
 DROP TABLE IF EXISTS tb_products;
 CREATE TABLE tb_products (
-  idproduct  int(11)       NOT NULL AUTO_INCREMENT,
-  desproduct varchar(64)   NOT NULL,
-  vlprice    decimal(10,2) NOT NULL,
-  vlwidth    decimal(10,2) NOT NULL,
-  vlheight   decimal(10,2) NOT NULL,
-  vllength   decimal(10,2) NOT NULL,
-  vlweight   decimal(10,2) NOT NULL,
-  desurl     varchar(128)  NOT NULL,
-  dtregister timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  idproduct  INT(11)       NOT NULL AUTO_INCREMENT,
+  desproduct VARCHAR(64)   NOT NULL,
+  vlprice    DECIMAL(10,2) NOT NULL,
+  vlwidth    DECIMAL(10,2) NOT NULL,
+  vlheight   DECIMAL(10,2) NOT NULL,
+  vllength   DECIMAL(10,2) NOT NULL,
+  vlweight   DECIMAL(10,2) NOT NULL,
+  desurl     VARCHAR(128)  NOT NULL,
+  dtregister TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (idproduct)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 DEFAULT COLLATE utf8_general_ci;
 
@@ -67,11 +67,11 @@ UNLOCK TABLES;
 --
 DROP TABLE IF EXISTS tb_persons;
 CREATE TABLE tb_persons (
-  idperson   int(11)      NOT NULL AUTO_INCREMENT,
-  desperson  varchar(64)  NOT NULL,
-  desemail   varchar(128) DEFAULT NULL,
-  nrphone    bigint(20)   DEFAULT NULL,
-  dtregister timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  idperson   INT(11)      NOT NULL AUTO_INCREMENT,
+  desperson  VARCHAR(64)  NOT NULL,
+  desemail   VARCHAR(128) DEFAULT NULL,
+  nrphone    BIGINT(20)   DEFAULT NULL,
+  dtregister TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (idperson)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 DEFAULT COLLATE utf8_general_ci;
 
@@ -87,12 +87,12 @@ UNLOCK TABLES;
 --
 DROP TABLE IF EXISTS tb_users;
 CREATE TABLE tb_users (
-  iduser      int(11)      NOT NULL AUTO_INCREMENT,
-  idperson    int(11)      NOT NULL,
-  deslogin    varchar(64)  NOT NULL,
-  despassword varchar(256) NOT NULL,
-  inadmin     tinyint(4)   NOT NULL DEFAULT '0',
-  dtregister  timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  iduser      INT(11)      NOT NULL AUTO_INCREMENT,
+  idperson    INT(11)      NOT NULL,
+  deslogin    VARCHAR(64)  NOT NULL,
+  despassword VARCHAR(256) NOT NULL,
+  inadmin     TINYINT(4)   NOT NULL DEFAULT '0',
+  dtregister  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (iduser),
   KEY FK_users_persons_idx (idperson),
   CONSTRAINT fk_users_persons FOREIGN KEY (idperson) REFERENCES tb_persons (idperson) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -110,15 +110,15 @@ UNLOCK TABLES;
 --
 DROP TABLE IF EXISTS tb_addresses;
 CREATE TABLE tb_addresses (
-  idaddress     int(11)      NOT NULL AUTO_INCREMENT,
-  idperson      int(11)      NOT NULL,
-  desaddress    varchar(128) NOT NULL,
-  descomplement varchar(32)  DEFAULT NULL,
-  descity       varchar(32)  NOT NULL,
-  desstate      varchar(32)  NOT NULL,
-  descountry    varchar(32)  NOT NULL,
-  nrzipcode     int(11)      NOT NULL,
-  dtregister    timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  idaddress     INT(11)      NOT NULL AUTO_INCREMENT,
+  idperson      INT(11)      NOT NULL,
+  desaddress    VARCHAR(128) NOT NULL,
+  descomplement VARCHAR(32)  DEFAULT NULL,
+  descity       VARCHAR(32)  NOT NULL,
+  desstate      VARCHAR(32)  NOT NULL,
+  descountry    VARCHAR(32)  NOT NULL,
+  nrzipcode     INT(11)      NOT NULL,
+  dtregister    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (idaddress),
   KEY fk_addresses_persons_idx (idperson),
   CONSTRAINT fk_addresses_persons FOREIGN KEY (idperson) REFERENCES tb_persons (idperson) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -129,12 +129,12 @@ CREATE TABLE tb_addresses (
 --
 DROP TABLE IF EXISTS tb_carts;
 CREATE TABLE tb_carts (
-  idcart       int(11)       NOT NULL,
-  dessessionid varchar(64)   NOT NULL,
-  iduser       int(11)       DEFAULT NULL,
-  idaddress    int(11)       DEFAULT NULL,
-  vlfreight    decimal(10,2) DEFAULT NULL,
-  dtregister   timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  idcart       INT(11)       NOT NULL,
+  dessessionid VARCHAR(64)   NOT NULL,
+  iduser       INT(11)       DEFAULT NULL,
+  idaddress    INT(11)       DEFAULT NULL,
+  vlfreight    DECIMAL(10,2) DEFAULT NULL,
+  dtregister   TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (idcart),
   KEY FK_carts_users_idx (iduser),
   KEY fk_carts_addresses_idx (idaddress),
@@ -147,11 +147,11 @@ CREATE TABLE tb_carts (
 --
 DROP TABLE IF EXISTS tb_cartsproducts;
 CREATE TABLE tb_cartsproducts (
-  idcartproduct int(11)   NOT NULL AUTO_INCREMENT,
-  idcart        int(11)   NOT NULL,
-  idproduct     int(11)   NOT NULL,
-  dtremoved     datetime  NOT NULL,
-  dtregister    timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  idcartproduct INT(11)   NOT NULL AUTO_INCREMENT,
+  idcart        INT(11)   NOT NULL,
+  idproduct     INT(11)   NOT NULL,
+  dtremoved     DATETIME  NOT NULL,
+  dtregister    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (idcartproduct),
   KEY FK_cartsproducts_carts_idx (idcart),
   KEY FK_cartsproducts_products_idx (idproduct),
@@ -164,12 +164,12 @@ CREATE TABLE tb_cartsproducts (
 --
 DROP TABLE IF EXISTS tb_orders;
 CREATE TABLE tb_orders (
-  idorder    int(11)       NOT NULL AUTO_INCREMENT,
-  idcart     int(11)       NOT NULL,
-  iduser     int(11)       NOT NULL,
-  idstatus   int(11)       NOT NULL,
-  vltotal    decimal(10,2) NOT NULL,
-  dtregister timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  idorder    INT(11)       NOT NULL AUTO_INCREMENT,
+  idcart     INT(11)       NOT NULL,
+  iduser     INT(11)       NOT NULL,
+  idstatus   INT(11)       NOT NULL,
+  vltotal    DECIMAL(10,2) NOT NULL,
+  dtregister TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (idorder),
   KEY FK_orders_carts_idx (idcart),
   KEY FK_orders_users_idx (iduser),
@@ -184,8 +184,8 @@ CREATE TABLE tb_orders (
 --
 DROP TABLE IF EXISTS tb_productscategories;
 CREATE TABLE tb_productscategories (
-  idcategory int(11) NOT NULL,
-  idproduct  int(11) NOT NULL,
+  idcategory INT(11) NOT NULL,
+  idproduct  INT(11) NOT NULL,
   PRIMARY KEY (idcategory,idproduct),
   KEY fk_productscategories_products_idx (idproduct),
   CONSTRAINT fk_productscategories_categories FOREIGN KEY (idcategory) REFERENCES tb_categories (idcategory) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -197,14 +197,14 @@ CREATE TABLE tb_productscategories (
 --
 DROP TABLE IF EXISTS tb_userslogs;
 CREATE TABLE tb_userslogs (
-  idlog        int(11)      NOT NULL AUTO_INCREMENT,
-  iduser       int(11)      NOT NULL,
-  deslog       varchar(128) NOT NULL,
-  desip        varchar(45)  NOT NULL,
-  desuseragent varchar(128) NOT NULL,
-  dessessionid varchar(64)  NOT NULL,
-  desurl       varchar(128) NOT NULL,
-  dtregister   timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  idlog        INT(11)      NOT NULL AUTO_INCREMENT,
+  iduser       INT(11)      NOT NULL,
+  deslog       VARCHAR(128) NOT NULL,
+  desip        VARCHAR(45)  NOT NULL,
+  desuseragent VARCHAR(128) NOT NULL,
+  dessessionid VARCHAR(64)  NOT NULL,
+  desurl       VARCHAR(128) NOT NULL,
+  dtregister   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (idlog),
   KEY fk_userslogs_users_idx (iduser),
   CONSTRAINT fk_userslogs_users FOREIGN KEY (iduser) REFERENCES tb_users (iduser) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -215,11 +215,11 @@ CREATE TABLE tb_userslogs (
 --
 DROP TABLE IF EXISTS tb_userspasswordsrecoveries;
 CREATE TABLE tb_userspasswordsrecoveries (
-  idrecovery int(11)     NOT NULL AUTO_INCREMENT,
-  iduser     int(11)     NOT NULL,
-  desip      varchar(45) NOT NULL,
-  dtrecovery datetime    DEFAULT NULL,
-  dtregister timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  idrecovery INT(11)     NOT NULL AUTO_INCREMENT,
+  iduser     INT(11)     NOT NULL,
+  desip      VARCHAR(45) NOT NULL,
+  dtrecovery DATETIME    DEFAULT NULL,
+  dtregister TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (idrecovery),
   KEY fk_userspasswordsrecoveries_users_idx (iduser),
   CONSTRAINT fk_userspasswordsrecoveries_users FOREIGN KEY (iduser) REFERENCES tb_users (iduser) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -229,7 +229,6 @@ CREATE TABLE tb_userspasswordsrecoveries (
 -- Dumping routines for database 'db_ecommerce'
 --
 DROP procedure IF EXISTS `sp_userspasswordsrecoveries_create`;
-
 DELIMITER $$
 CREATE PROCEDURE `sp_userspasswordsrecoveries_create` (
 piduser INT,
@@ -238,17 +237,14 @@ pdesip VARCHAR(45)
 BEGIN
 
 	INSERT INTO tb_userspasswordsrecoveries (iduser, desip)
-    VALUES(piduser, pdesip);
+  VALUES(piduser, pdesip);
     
-    SELECT * FROM tb_userspasswordsrecoveries
-    WHERE idrecovery = LAST_INSERT_ID();
+  SELECT * FROM tb_userspasswordsrecoveries WHERE idrecovery = LAST_INSERT_ID();
 
 END$$
-
 DELIMITER ;
 
 DROP procedure IF EXISTS `sp_usersupdate_save`;
-
 DELIMITER $$
 CREATE PROCEDURE `sp_usersupdate_save` (
 piduser INT,
@@ -261,55 +257,50 @@ pinadmin TINYINT
 )
 BEGIN
 	
-    DECLARE vidperson INT;
+  DECLARE vidperson INT;
     
 	SELECT idperson INTO vidperson
     FROM tb_users
     WHERE iduser = piduser;
     
-    UPDATE tb_persons
-    SET 
-		desperson = pdesperson,
-        desemail = pdesemail,
-        nrphone = pnrphone
-	WHERE idperson = vidperson;
+  UPDATE tb_persons
+     SET desperson = pdesperson,
+         desemail = pdesemail,
+         nrphone = pnrphone
+	 WHERE idperson = vidperson;
     
-    UPDATE tb_users
-    SET
-		deslogin = pdeslogin,
-        despassword = pdespassword,
-        inadmin = pinadmin
-	WHERE iduser = piduser;
+  UPDATE tb_users
+     SET deslogin = pdeslogin,
+         despassword = pdespassword,
+         inadmin = pinadmin
+   WHERE iduser = piduser;
     
-    SELECT * FROM tb_users a INNER JOIN tb_persons b USING(idperson) WHERE a.iduser = piduser;
+  SELECT * FROM tb_users a INNER JOIN tb_persons b USING(idperson) WHERE a.iduser = piduser;
 
 END$$
-
 DELIMITER ;
 
 DROP procedure IF EXISTS `sp_users_delete`;
-
 DELIMITER $$
 CREATE PROCEDURE `sp_users_delete` (
 piduser INT
 )
 BEGIN
 	
-    DECLARE vidperson INT;
+  DECLARE vidperson INT;
     
 	SELECT idperson INTO vidperson
     FROM tb_users
     WHERE iduser = piduser;
     
-    DELETE FROM tb_users WHERE iduser = piduser;
-    DELETE FROM tb_persons WHERE idperson = vidperson;
+  DELETE FROM tb_users WHERE iduser = piduser;
+  
+  DELETE FROM tb_persons WHERE idperson = vidperson;
 
 END$$
-
 DELIMITER ;
 
 DROP procedure IF EXISTS `sp_users_save`;
-
 DELIMITER $$
 CREATE PROCEDURE `sp_users_save` (
 pdesperson VARCHAR(64), 
@@ -321,20 +312,45 @@ pinadmin TINYINT
 )
 BEGIN
 	
-    DECLARE vidperson INT;
+  DECLARE vidperson INT;
     
 	INSERT INTO tb_persons (desperson, desemail, nrphone)
-    VALUES(pdesperson, pdesemail, pnrphone);
+  VALUES(pdesperson, pdesemail, pnrphone);
     
-    SET vidperson = LAST_INSERT_ID();
+  SET vidperson = LAST_INSERT_ID();
     
-    INSERT INTO tb_users (idperson, deslogin, despassword, inadmin)
-    VALUES(vidperson, pdeslogin, pdespassword, pinadmin);
+  INSERT INTO tb_users (idperson, deslogin, despassword, inadmin)
+  VALUES(vidperson, pdeslogin, pdespassword, pinadmin);
     
-    SELECT * FROM tb_users a INNER JOIN tb_persons b USING(idperson) WHERE a.iduser = LAST_INSERT_ID();
+  SELECT * FROM tb_users a INNER JOIN tb_persons b USING(idperson) WHERE a.iduser = LAST_INSERT_ID();
 
 END$$
+DELIMITER ;
 
+DELIMITER $$
+CREATE PROCEDURE `sp_categories_save` (
+pidcategory INT,
+pdescategory VARCHAR(64)
+)
+BEGIN
+	
+	IF pidcategory > 0 THEN
+		
+		UPDATE tb_categories
+       SET descategory = pdescategory
+     WHERE idcategory = pidcategory;
+        
+  ELSE
+		
+		INSERT INTO tb_categories (descategory) VALUES(pdescategory);
+        
+    SET pidcategory = LAST_INSERT_ID();
+        
+  END IF;
+    
+  SELECT * FROM tb_categories WHERE idcategory = pidcategory;
+    
+END$$
 DELIMITER ;
 
 -- Dump completed on 2017-04-24 11:50:48

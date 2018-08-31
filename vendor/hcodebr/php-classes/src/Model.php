@@ -16,7 +16,7 @@ class Model
         {
 
             case "get":
-                return $this->values[$fieldName];
+                return (isset($this->values[$fieldName])) ? $this->values[$fieldName] : NULL;  // a primeira vez que etá inserindo, a variável não existe, portanto é passado null.
             break;
 
             case "set":
