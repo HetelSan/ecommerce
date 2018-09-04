@@ -12,6 +12,7 @@ class User extends Model
     const SESSION = "User";
     const SECRET = "HcodePhp7_Secret";
     const ERROR = "UserError";
+    const ERROR_REGISTER = "UserErrorRegister";
 
     public static function getFromSession()
     {
@@ -27,12 +28,11 @@ class User extends Model
         return $user;
 
     }
-   
+
     public static function checkLogin($inadmin = true)
     {
 
-        if (
-            !isset($_SESSION[User::SESSION])
+        if (!isset($_SESSION[User::SESSION])
             ||
             !$_SESSION[User::SESSION]
             ||
@@ -60,19 +60,19 @@ class User extends Model
 
     }
 
-    /**
-     * 
-     * Esta função verifica se o usuário informado existe no banco de bados
-     * 
-     */
     public static function login($login, $password)
     {
 
         $sql = new Sql();
 
-        $results = $sql->select("SELECT * FROM tb_users a INNER JOIN tb_persons b ON a.idperson = b.idperson WHERE a.deslogin = :LOGIN", array(
-            ":LOGIN" => $login
-        ));
+        $results = $sql->select("
+            SELECT * 
+              FROM tb_users a 
+             INNER JOIN tb_persons b ON a.idperson = b.idperson 
+             WHERE a.deslogin = :login
+        ", [
+            ":login" => $login
+        ]);
 
         if (count($results) === 0) {
 
@@ -82,8 +82,7 @@ class User extends Model
 
         $data = $results[0];
 
-        if (password_verify($password, $data["despassword"]) === true) 
-        {
+        if (password_verify($password, $data["despassword"]) === true) {
             $user = new User();
 
             $data['desperson'] = utf8_encode($data['desperson']);
@@ -107,9 +106,13 @@ class User extends Model
         if (!User::checkLogin($inadmin)) {
 
             if ($inadmin) {
+
                 header("Location: /admin/login");
+
             } else {
+
                 header("Location: /login");
+
             }
             exit;
 
@@ -129,7 +132,12 @@ class User extends Model
 
         $sql = new Sql();
 
-        $results = $sql->select("SELECT * FROM tb_users a INNER JOIN tb_persons b USING (idperson) ORDER BY b.desperson");
+        $results = $sql->select("
+            SELECT * 
+            FROM tb_users a 
+            INNER JOIN tb_persons b USING (idperson) 
+            ORDER BY b.desperson
+        ");
 
         return $results;
 
@@ -140,14 +148,16 @@ class User extends Model
 
         $sql = new Sql();
 
-        $results = $sql->select("CALL sp_users_save(:desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)", array(
+        $results = $sql->select("
+            CALL sp_users_save(:desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)
+        ", [
             ":desperson" => utf8_decode($this->getdesperson()),
             ":deslogin" => $this->getdeslogin(),
             ":despassword" => User::getPasswordHash($this->getdespassword()),
             ":desemail" => $this->getdesemail(),
             ":nrphone" => $this->getnrphone(),
             ":inadmin" => $this->getinadmin()
-        ));
+        ]);
 
         $this->setData($results[0]);
 
@@ -158,9 +168,14 @@ class User extends Model
 
         $sql = new Sql();
 
-        $results = $sql->select("SELECT * FROM tb_users a INNER JOIN tb_persons b USING (idperson) WHERE a.iduser = :iduser", array(
+        $results = $sql->select("
+            SELECT * 
+              FROM tb_users a 
+             INNER JOIN tb_persons b USING (idperson) 
+             WHERE a.iduser = :iduser
+        ", [
             ":iduser" => $iduser
-        ));
+        ]);
 
         $data = $results[0];
 
@@ -175,15 +190,17 @@ class User extends Model
 
         $sql = new Sql();
 
-        $results = $sql->select("CALL sp_usersupdate_save(:iduser, :desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)", array(
+        $results = $sql->select("
+            CALL sp_usersupdate_save(:iduser, :desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)
+        ", [
             ":iduser" => $this->getiduser(),
             ":desperson" => utf8_decode($this->getdesperson()),
             ":deslogin" => $this->getdeslogin(),
-            ":despassword" => User::getPasswordHash($this->getdespassword()),
+            ":despassword" => $this->getdespassword(),
             ":desemail" => $this->getdesemail(),
             ":nrphone" => $this->getnrphone(),
             ":inadmin" => $this->getinadmin()
-        ));
+        ]);
 
         $this->setData($results[0]);
 
@@ -194,9 +211,9 @@ class User extends Model
 
         $sql = new Sql();
 
-        $sql->query("CALL sp_users_delete(:iduser)", array(
+        $sql->query("CALL sp_users_delete(:iduser)", [
             ":iduser" => $this->getiduser()
-        ));
+        ]);
 
     }
 
@@ -204,9 +221,14 @@ class User extends Model
     {
         $sql = new Sql();
 
-        $results = $sql->select("SELECT * FROM tb_persons a INNER JOIN tb_users b USING(idperson) WHERE a.desemail = :email;", array(
+        $results = $sql->select("
+            SELECT * 
+              FROM tb_persons a 
+             INNER JOIN tb_users b USING(idperson) 
+             WHERE a.desemail = :email
+        ", [
             ":email" => $email
-        ));
+        ]);
 
         if (count($results) === 0) {
 
@@ -216,10 +238,10 @@ class User extends Model
 
             $data = $results[0];
 
-            $results2 = $sql->select("CALL sp_userspasswordsrecoveries_create(:iduser, :desip)", array(
+            $results2 = $sql->select("CALL sp_userspasswordsrecoveries_create(:iduser, :desip)", [
                 ":iduser" => $data['iduser'],
                 ":desip" => $_SERVER['REMOTE_ADDR']
-            ));
+            ]);
 
             if (count($results2) === 0) {
 
@@ -263,9 +285,17 @@ class User extends Model
 
         $sql = new Sql();
 
-        $results = $sql->select("SELECT * FROM tb_userspasswordsrecoveries a INNER JOIN tb_users b USING(iduser) INNER JOIN tb_persons c USING(idperson) WHERE a.idrecovery = :idrecovery AND a.dtrecovery IS NULL AND DATE_ADD(a.dtregister, INTERVAL 1 HOUR) >= NOW();", array(
+        $results = $sql->select("
+            SELECT * 
+              FROM tb_userspasswordsrecoveries a 
+             INNER JOIN tb_users b USING (iduser) 
+             INNER JOIN tb_persons c USING (idperson) 
+             WHERE a.idrecovery = :idrecovery 
+               AND a.dtrecovery IS NULL 
+               AND DATE_ADD(a.dtregister, INTERVAL 1 HOUR) >= NOW()
+        ", [
             ":idrecovery" => $idrecovery
-        ));
+        ]);
 
         if (count($results) === 0) {
 
@@ -282,9 +312,13 @@ class User extends Model
     {
         $sql = new Sql();
 
-        $sql->query("UPDATE tb_userspasswordsrecoveries SET dtrecovery = NOW() WHERE idrecovery = :idrecovery", array(
+        $sql->query("
+            UPDATE tb_userspasswordsrecoveries 
+               SET dtrecovery = NOW() 
+             WHERE idrecovery = :idrecovery
+        ", [
             ":idrecovery" => $idrecovery
-        ));
+        ]);
     }
 
     public function setPassword($password)
@@ -292,10 +326,15 @@ class User extends Model
 
         $sql = new Sql();
 
-        $sql->query("UPDATE tb_users SET despassword = :password WHERE iduser = :iduser", array(
+        $sql->query("
+            UPDATE tb_users 
+               SET despassword = :password 
+             WHERE iduser = :iduser
+        ", [
             ":password" => $password,
             ":iduser" => $this->getiduser()
-        ));
+        ]);
+
     }
 
     public static function setError($msg)
@@ -319,7 +358,49 @@ class User extends Model
     public static function clearError()
     {
 
-        $_SESSION[User::ERROR] = NULL;
+        $_SESSION[User::ERROR] = null;
+
+    }
+
+    public static function setErrorRegister($msg)
+    {
+
+        $_SESSION[User::ERROR_REGISTER] = $msg;
+
+    }
+
+    public static function getErrorRegister()
+    {
+
+        $msg = (isset($_SESSION[User::ERROR_REGISTER]) && $_SESSION[User::ERROR_REGISTER]) ? $_SESSION[USER::ERROR_REGISTER] : '';
+
+        User::clearErrorRegister();
+
+        return $msg;
+
+    }
+
+    public static function clearErrorRegister()
+    {
+
+        $_SESSION[User::ERROR_REGISTER] = null;
+
+    }
+
+    public static function checkLoginExists($login)
+    {
+
+        $sql = new Sql();
+
+        $results = $sql->select("
+            SELECT *
+              FROM tb_users
+             WHERE deslogin = :deslogin
+        ", [
+            ':deslogin' => $login
+        ]);
+
+        return (count($results) > 0);
 
     }
 
