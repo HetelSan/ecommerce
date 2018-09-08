@@ -15,10 +15,8 @@ class Cart extends Model
 
     /**
      * 
-     * Recupera o id do carrinho da sessão
-     * 
+     * @return \Hcode\Model\Cart
      */
-
     public static function getFromSession()
     {
 
@@ -60,6 +58,9 @@ class Cart extends Model
 
     }
 
+    /**
+     * 
+     */
     public function setToSession()
     {
 
@@ -67,6 +68,9 @@ class Cart extends Model
 
     }
 
+    /**
+     * 
+     */
     public function getFromSessionID()
     {
 
@@ -84,6 +88,10 @@ class Cart extends Model
 
     }
 
+    /**
+     * 
+     * @param int $idcart
+     */
     public function get(int $idcart)
     {
 
@@ -101,6 +109,9 @@ class Cart extends Model
 
     }
 
+    /**
+     * 
+     */
     public function save()
     {
 
@@ -121,9 +132,7 @@ class Cart extends Model
 
     /**
      * 
-     * Este método adiciona produtos no carrinho de compras
-     * Recebe como parâmetro de entrada uma instância da classe Product
-     * 
+     * @param \Hcode\Model\Product $product
      */
     public function addProduct(Product $product)
     {
@@ -139,23 +148,41 @@ class Cart extends Model
 
     }
 
+    /**
+     * 
+     * @param \Hcode\Model\Product $product
+     * @param type $all
+     */
     public function removeProduct(Product $product, $all = false)
     {
 
         $sql = new Sql();
 
-        /* removendo todos os produtos com o mesmo Id no carrinho */
-
         if ($all) {
 
-            $sql->query("UPDATE tb_cartsproducts SET dtremoved = NOW() WHERE idcart = :idcart AND idproduct = :idproduct AND dtremoved IS NULL", [
+            // remove todos os produtos com o mesmo ID do carrinho de compras
+            $sql->query("
+                UPDATE tb_cartsproducts 
+                   SET dtremoved = NOW() 
+                 WHERE idcart = :idcart 
+                   AND idproduct = :idproduct 
+                   AND dtremoved IS NULL
+            ", [
                 ':idcart' => $this->getidcart(),
                 ':idproduct' => $product->getidproduct()
             ]);
 
         } else {
 
-            $sql->query("UPDATE tb_cartsproducts SET dtremoved = NOW() WHERE idcart = :idcart AND idproduct = :idproduct AND dtremoved IS NULL LIMIT 1", [
+            // remove apenas uma ocorrência do produto do carrinho de compras
+            $sql->query("
+                UPDATE tb_cartsproducts 
+                   SET dtremoved = NOW() 
+                 WHERE idcart = :idcart 
+                   AND idproduct = :idproduct 
+                   AND dtremoved IS NULL 
+                 LIMIT 1
+            ", [
                 ':idcart' => $this->getidcart(),
                 ':idproduct' => $product->getidproduct()
             ]);
@@ -165,6 +192,10 @@ class Cart extends Model
 
     }
 
+    /**
+     * 
+     * @return type
+     */
     public function getProducts()
     {
         $sql = new Sql();
@@ -194,6 +225,10 @@ class Cart extends Model
 
     }
 
+    /**
+     * 
+     * @return type
+     */
     public function getProductsTotals()
     {
 
@@ -227,6 +262,11 @@ class Cart extends Model
 
     }
 
+    /**
+     * 
+     * @param type $zipcode
+     * @return type
+     */
     public function setFreight($zipcode)
     {
 
@@ -286,6 +326,11 @@ class Cart extends Model
 
     }
 
+    /**
+     * 
+     * @param type $value
+     * @return float
+     */
     public static function formatValueToDecimal($value) : float
     {
 
@@ -295,6 +340,10 @@ class Cart extends Model
 
     }
 
+    /**
+     * 
+     * @param type $msg
+     */
     public static function setMsgError($msg)
     {
 
@@ -302,6 +351,10 @@ class Cart extends Model
 
     }
 
+    /**
+     * 
+     * @return type
+     */
     public static function getMsgError()
     {
 
@@ -313,6 +366,9 @@ class Cart extends Model
 
     }
 
+    /**
+     * 
+     */
     public static function clearMsgError()
     {
 
@@ -320,6 +376,9 @@ class Cart extends Model
 
     }
 
+    /**
+     * 
+     */
     public function updateFreight()
     {
 
@@ -330,6 +389,10 @@ class Cart extends Model
 
     }
 
+    /**
+     * 
+     * @return type
+     */
     public function getValues()
     {
 
@@ -339,6 +402,9 @@ class Cart extends Model
 
     }
 
+    /**
+     * 
+     */
     public function getCalculateTotal()
     {
 

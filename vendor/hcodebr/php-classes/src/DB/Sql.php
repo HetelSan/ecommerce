@@ -12,6 +12,9 @@ class Sql {
 
 	private $conn;
 
+        /**
+         * 
+         */
 	public function __construct()
 	{
 
@@ -23,7 +26,12 @@ class Sql {
 
 	}
 
-	private function setParams($statement, $parameters = array())
+	/**
+         * 
+         * @param type $statement
+         * @param type $parameters
+         */
+        private function setParams($statement, $parameters = array())
 	{
 
 		foreach ($parameters as $key => $value) {
@@ -34,14 +42,25 @@ class Sql {
 
 	}
 
-	private function bindParam($statement, $key, $value)
+	/**
+         * 
+         * @param type $statement
+         * @param type $key
+         * @param type $value
+         */
+        private function bindParam($statement, $key, $value)
 	{
 
 		$statement->bindParam($key, $value);
 
 	}
 
-	public function query($rawQuery, $params = array())
+	/**
+         * 
+         * @param type $rawQuery
+         * @param type $params
+         */
+        public function query($rawQuery, $params = array())
 	{
 
 		$stmt = $this->conn->prepare($rawQuery);
@@ -52,7 +71,13 @@ class Sql {
 
 	}
 
-	public function select($rawQuery, $params = array()):array
+	/**
+         * 
+         * @param type $rawQuery
+         * @param type $params
+         * @return array
+         */
+        public function select($rawQuery, $params = array()):array
 	{
 
 		$stmt = $this->conn->prepare($rawQuery);

@@ -15,6 +15,10 @@ class User extends Model
     const ERROR_REGISTER = "UserErrorRegister";
     const SUCCESS = "UserSuccess";
 
+    /**
+     * 
+     * @return \Hcode\Model\User
+     */
     public static function getFromSession()
     {
 
@@ -30,6 +34,11 @@ class User extends Model
 
     }
 
+    /**
+     * 
+     * @param type $inadmin
+     * @return boolean
+     */
     public static function checkLogin($inadmin = true)
     {
 
@@ -61,6 +70,13 @@ class User extends Model
 
     }
 
+    /**
+     * 
+     * @param type $login
+     * @param type $password
+     * @return \Hcode\Model\User
+     * @throws \Exception
+     */
     public static function login($login, $password)
     {
 
@@ -101,6 +117,10 @@ class User extends Model
 
     }
 
+    /**
+     * 
+     * @param type $inadmin
+     */
     public static function verifyLogin($inadmin = true)
     {
 
@@ -122,6 +142,9 @@ class User extends Model
 
     }
 
+    /**
+     * 
+     */
     public static function logout()
     {
 
@@ -129,6 +152,10 @@ class User extends Model
 
     }
 
+    /**
+     * 
+     * @return type
+     */
     public static function listAll()
     {
 
@@ -145,6 +172,9 @@ class User extends Model
 
     }
 
+    /**
+     * 
+     */
     public function save()
     {
 
@@ -165,6 +195,10 @@ class User extends Model
 
     }
 
+    /**
+     * 
+     * @param type $iduser
+     */
     public function get($iduser)
     {
 
@@ -187,6 +221,9 @@ class User extends Model
 
     }
 
+    /**
+     * 
+     */
     public function update()
     {
 
@@ -208,6 +245,9 @@ class User extends Model
 
     }
 
+    /**
+     * 
+     */
     public function delete()
     {
 
@@ -316,6 +356,13 @@ class User extends Model
 
      */
 
+    /**
+     * 
+     * @param type $email
+     * @param type $inadmin
+     * @return type
+     * @throws \Exception
+     */
     public static function getForgot($email, $inadmin = true)
     {
 
@@ -383,6 +430,12 @@ class User extends Model
         }
     }
 
+    /**
+     * 
+     * @param type $result
+     * @return type
+     * @throws \Exception
+     */
     public static function validForgotDecrypt($result)
     {
         $result = base64_decode($result);
@@ -415,6 +468,10 @@ class User extends Model
         }
     }
 
+    /**
+     * 
+     * @param type $idrecovery
+     */
     public static function setForgotUsed($idrecovery)
     {
 
@@ -429,6 +486,10 @@ class User extends Model
         ]);
     }
 
+    /**
+     * 
+     * @param type $password
+     */
     public function setPassword($password)
     {
 
@@ -445,6 +506,10 @@ class User extends Model
 
     }
 
+    /**
+     * 
+     * @param type $msg
+     */
     public static function setError($msg)
     {
 
@@ -452,6 +517,10 @@ class User extends Model
 
     }
 
+    /**
+     * 
+     * @return type
+     */
     public static function getError()
     {
 
@@ -463,6 +532,9 @@ class User extends Model
 
     }
 
+    /**
+     * 
+     */
     public static function clearError()
     {
 
@@ -470,6 +542,10 @@ class User extends Model
 
     }
 
+    /**
+     * 
+     * @param type $msg
+     */
     public static function setSuccess($msg)
     {
 
@@ -477,6 +553,10 @@ class User extends Model
 
     }
 
+    /**
+     * 
+     * @return type
+     */
     public static function getSuccess()
     {
 
@@ -488,6 +568,9 @@ class User extends Model
 
     }
 
+    /**
+     * 
+     */
     public static function clearSuccess()
     {
 
@@ -495,6 +578,10 @@ class User extends Model
 
     }
 
+    /**
+     * 
+     * @param type $msg
+     */
     public static function setErrorRegister($msg)
     {
 
@@ -502,6 +589,10 @@ class User extends Model
 
     }
 
+    /**
+     * 
+     * @return type
+     */
     public static function getErrorRegister()
     {
 
@@ -513,6 +604,9 @@ class User extends Model
 
     }
 
+    /**
+     * 
+     */
     public static function clearErrorRegister()
     {
 
@@ -520,6 +614,11 @@ class User extends Model
 
     }
 
+    /**
+     * 
+     * @param type $login
+     * @return type
+     */
     public static function checkLoginExists($login)
     {
 
@@ -537,12 +636,42 @@ class User extends Model
 
     }
 
+    /**
+     * 
+     * @param type $password
+     * @return type
+     */
     public static function getPasswordHash($password)
     {
 
         return password_hash($password, PASSWORD_DEFAULT, [
             'cost' => 12
         ]);
+
+    }
+
+    /**
+     * 
+     */
+    public function getOrders()
+    {
+
+        $sql = new Sql();
+
+        $results = $sql->select("
+            SELECT *
+              FROM tb_orders a
+             INNER JOIN tb_ordersstatus b USING(idstatus)
+             INNER JOIN tb_carts c USING(idcart)
+             INNER JOIN tb_users d ON d.iduser = a.iduser
+             INNER JOIN tb_addresses e USING(idaddress)
+             INNER JOIN tb_persons f ON f.idperson = d.idperson
+             WHERE a.iduser = :iduser
+        ", [
+            ':iduser' => $this->getiduser()
+        ]);
+
+        return $results;
 
     }
 

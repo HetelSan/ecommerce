@@ -9,6 +9,10 @@ use Hcode\Mailer;
 class Product extends Model
 {
 
+    /**
+     * 
+     * @return type
+     */
     public static function listAll()
     {
 
@@ -18,6 +22,11 @@ class Product extends Model
 
     }
 
+    /**
+     * 
+     * @param type $list
+     * @return type
+     */
     public static function checkList($list)
     {
 
@@ -33,6 +42,9 @@ class Product extends Model
 
     }
 
+    /**
+     * 
+     */
     public function save()
     {
 
@@ -53,6 +65,10 @@ class Product extends Model
 
     }
 
+    /**
+     * 
+     * @param type $idproduct
+     */
     public function get($idproduct)
     {
 
@@ -66,6 +82,9 @@ class Product extends Model
 
     }
 
+    /**
+     * 
+     */
     public function delete()
     {
 
@@ -77,6 +96,10 @@ class Product extends Model
 
     }
 
+    /**
+     * 
+     * @return type
+     */
     public function checkPhoto()
     {
 
@@ -102,8 +125,8 @@ class Product extends Model
     }
 
     /**
-     * Sobrescrevendo o método  getValues da classe Model
-     * para tratar a foto
+     * 
+     * @return type
      */
     public function getValues()
     {
@@ -116,6 +139,10 @@ class Product extends Model
 
     }
 
+    /**
+     * 
+     * @param type $file
+     */
     public function setPhoto($file)
     {
 
@@ -154,6 +181,10 @@ class Product extends Model
 
     }
 
+    /**
+     * 
+     * @param type $desurl
+     */
     public function getFromURL($desurl)
     {
 
@@ -167,6 +198,10 @@ class Product extends Model
 
     }
 
+    /**
+     * 
+     * @return type
+     */
     public function getCategories()
     {
 

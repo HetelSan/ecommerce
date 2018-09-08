@@ -6,6 +6,12 @@ class Model
 {
     private $values = [];
 
+    /**
+     * 
+     * @param type $name
+     * @param type $arguments
+     * @return type
+     */
     public function __call($name, $arguments)
     {
 
@@ -25,11 +31,10 @@ class Model
         }
 
     }
-
+    
     /**
      * 
-     * Faz um set automático de todos os campos que vieram do banco de dados.
-     * 
+     * @param type $data
      */
     public function setData($data = array())
     {
@@ -43,11 +48,7 @@ class Model
 
     /**
      * 
-     * Função utilizada para retornar o atributo do banco de dados.
-     * Não acessar o atributo diretamente pois não é uma boa prática. 
-     * O atributo é privado. 
-     * E por maior segurança
-     * 
+     * @return type
      */
     public function getValues()
     {

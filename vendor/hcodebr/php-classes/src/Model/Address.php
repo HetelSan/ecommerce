@@ -10,6 +10,11 @@ class Address extends Model
 
     const SESSION_ERROR = "AddressError";
 
+    /**
+     * 
+     * @param type $nrcep
+     * @return type
+     */
     public static function getCEP($nrcep)
     {
 
@@ -30,6 +35,10 @@ class Address extends Model
 
     }
 
+    /**
+     * 
+     * @param type $nrcep
+     */
     public function loadFromCEP($nrcep)
     {
 
@@ -49,6 +58,9 @@ class Address extends Model
 
     }
 
+    /**
+     * 
+     */
     public function save()
     {
 
@@ -74,6 +86,10 @@ class Address extends Model
         }
     }
 
+    /**
+     * 
+     * @param type $msg
+     */
     public static function setMsgError($msg)
     {
 
@@ -81,6 +97,10 @@ class Address extends Model
 
     }
 
+    /**
+     * 
+     * @return type
+     */
     public static function getMsgError()
     {
 
@@ -92,6 +112,9 @@ class Address extends Model
 
     }
 
+    /**
+     * 
+     */
     public static function clearMsgError()
     {
 

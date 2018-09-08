@@ -9,6 +9,10 @@ use Hcode\Mailer;
 class Category extends Model
 {
 
+    /**
+     * 
+     * @return type
+     */
     public static function listAll()
     {
 
@@ -20,6 +24,9 @@ class Category extends Model
 
     }
 
+    /**
+     * 
+     */
     public function save()
     {
 
@@ -36,6 +43,10 @@ class Category extends Model
 
     }
 
+    /**
+     * 
+     * @param type $idcategory
+     */
     public function get($idcategory)
     {
 
@@ -49,6 +60,9 @@ class Category extends Model
 
     }
 
+    /**
+     * 
+     */
     public function delete()
     {
 
@@ -62,6 +76,9 @@ class Category extends Model
 
     }
 
+    /**
+     * 
+     */
     public static function updateFile()
     {
 
@@ -76,6 +93,11 @@ class Category extends Model
         file_put_contents($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . "categories-menu.html", implode('', $html));
     }
 
+    /**
+     * 
+     * @param type $related
+     * @return type
+     */
     public function getProducts($related = true)
     {
 
@@ -110,12 +132,16 @@ class Category extends Model
 
     }
 
+    /**
+     * 
+     * @param type $page
+     * @param type $itemsPerPage
+     * @return type
+     */
     public function getProductsPage($page = 1, $itemsPerPage = 3)
     {
 
         $start = ($page - 1) * $itemsPerPage;
-
-
 
         $sql = new Sql();
 
@@ -140,6 +166,10 @@ class Category extends Model
 
     }
 
+    /**
+     * 
+     * @param \Hcode\Model\Product $product
+     */
     public function addProduct(Product $product)
     {
 
@@ -152,6 +182,10 @@ class Category extends Model
 
     }
 
+    /**
+     * 
+     * @param \Hcode\Model\Product $product
+     */
     public function removeProduct(Product $product)
     {
 

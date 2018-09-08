@@ -4,6 +4,9 @@ namespace Hcode;
 
 use Rain\Tpl;
 
+/**
+ * 
+ */
 class Mailer
 {
 
@@ -13,6 +16,14 @@ class Mailer
 
     private $mail;
 
+    /**
+     * 
+     * @param type $toAddress
+     * @param type $toName
+     * @param type $subject
+     * @param type $tplName
+     * @param type $data
+     */
     public function __construct($toAddress, $toName, $subject, $tplName, $data = array())
     {
 
@@ -93,7 +104,11 @@ class Mailer
         //$this->mail->addAttachment('images/phpmailer_mini.png');
 
     }
-
+    
+    /**
+     * 
+     * @return type
+     */
     public function send()
     {
 
@@ -102,6 +117,5 @@ class Mailer
     }
 
 }
-
 
 ?>

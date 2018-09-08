@@ -8,6 +8,9 @@ use \Hcode\Model;
 class Order extends Model
 {
 
+    /**
+     * 
+     */
     public function save()
     {
 
@@ -30,6 +33,10 @@ class Order extends Model
 
     }
 
+    /**
+     * 
+     * @param type $idorder
+     */
     public function get($idorder)
     {
 

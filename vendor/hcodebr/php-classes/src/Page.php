@@ -15,6 +15,11 @@ class Page
 		"data" => []
 	];
 
+        /**
+         * 
+         * @param type $opts
+         * @param type $tpl_dir
+         */
 	public function __construct($opts = array(), $tpl_dir = "/views/") 
 	{
 
@@ -37,7 +42,11 @@ class Page
 		if ($this->options["header"] === true) $this->tpl->draw("header");
 
 	}
-
+        
+        /**
+         * 
+         * @param type $data
+         */
 	private function setData($data = array())
 	{
 
@@ -47,7 +56,14 @@ class Page
 		
 	}
 
-	public function setTpl($name, $data = array(), $returnHTML = false)
+        /**
+         * 
+         * @param type $name
+         * @param type $data
+         * @param type $returnHTML
+         * @return type
+         */
+        public function setTpl($name, $data = array(), $returnHTML = false)
 	{
 
 		$this->setData($data);
@@ -56,19 +72,16 @@ class Page
 
 	}
 
-	public function __destruct()
+	/**
+         * 
+         */
+        public function __destruct()
 	{
 
 		if ($this->options["footer"] === true) $this->tpl->draw("footer");
 
 	}
 
-
-
-
-
-
 }
-
 
 ?>
