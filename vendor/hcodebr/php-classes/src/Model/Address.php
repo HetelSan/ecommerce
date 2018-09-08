@@ -99,7 +99,6 @@ class Address extends Model
 
     }
 
-
 }
 
 ?>
