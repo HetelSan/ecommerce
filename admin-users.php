@@ -6,13 +6,47 @@ use \Hcode\Model\User;
 $app->get('/admin/users', function () {
 
 	User::verifyLogin();
+	
+    // se a variável $search existir, retorna ela mesma, caso contrário retorna vazio
+	$search = (isset($_GET['search'])) ? $_GET['search'] : ''; 
+	
+	// definindo a página atual
+	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 1;
 
-	$users = User::listAll();
+	if ($search != '') {
+
+		$pagination = User::getUsersPageSearch($search, $page);
+		
+	} else {
+		
+		$pagination = User::getUsersPage($page);
+
+	}
+
+	// var_dump($pagination['data']);
+	// exit;
+
+	$pages = [];
+
+	for ($i=0; $i < $pagination['pages']; $i++) 
+	{ 
+
+		array_push($pages, [
+			'href' => '/admin/users?' . http_build_query([
+				'page' => $i + 1,
+				'search' => $search
+			]),
+			'text' => $i + 1
+		]);
+
+	}
 
 	$page = new PageAdmin();
 
 	$page->setTpl("users", array(
-		"users" => $users
+		"users" => $pagination['data'],
+		"search" => $search,
+		"pages" => $pages
 	));
 });
 
