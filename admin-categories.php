@@ -9,12 +9,46 @@ $app->get('/admin/categories', function () {
 
 	User::verifyLogin();
 
-	$categories = Category::listAll();
+    // se a variável $search existir, retorna ela mesma, caso contrário retorna vazio
+	$search = (isset($_GET['search'])) ? $_GET['search'] : ''; 
+	
+	// definindo a página atual
+	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 1;
+
+	if ($search != '') {
+
+		$pagination = Category::getCategoriesPageSearch($search, $page);
+		
+	} else {
+		
+		$pagination = Category::getCategoriesPage($page);
+
+	}
+
+	// var_dump($pagination['data']);
+	// exit;
+
+	$pages = [];
+
+	for ($i=0; $i < $pagination['pages']; $i++) 
+	{ 
+
+		array_push($pages, [
+			'href' => '/admin/categories?' . http_build_query([
+				'page' => $i + 1,
+				'search' => $search
+			]),
+			'text' => $i + 1
+		]);
+
+	}
 
 	$page = new PageAdmin();
 
 	$page->setTpl("categories", [
-		"categories" => $categories
+		"categories" => $pagination['data'],
+		"search" => $search,
+		"pages" => $pages
 	]);
 
 });
