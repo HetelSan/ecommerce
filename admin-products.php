@@ -8,11 +8,46 @@ $app->get('/admin/products', function () {
 
     User::verifyLogin();
 
-    $products = Product::listAll();
+    // se a variável $search existir, retorna ela mesma, caso contrário retorna vazio
+	$search = (isset($_GET['search'])) ? $_GET['search'] : ''; 
+	
+	// definindo a página atual
+	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 1;
+
+	if ($search != '') {
+
+		$pagination = Product::getProductsPageSearch($search, $page);
+		
+	} else {
+		
+		$pagination = Product::getProductsPage($page);
+	}
+
+	// var_dump($pagination['data']);
+	// exit;
+
+	$pages = [];
+
+	for ($i=0; $i < $pagination['pages']; $i++) 
+	{ 
+
+		array_push($pages, [
+			'href' => '/admin/products?' . http_build_query([
+				'page' => $i + 1,
+				'search' => $search
+			]),
+			'text' => $i + 1
+		]);
+
+	}
+
+    // $products = Product::listAll();
 
     $page = new PageAdmin();
     $page->setTpl("products", [
-        "products" => $products
+		"products" => $pagination['data'],
+		"search" => $search,
+		"pages" => $pages
     ]);
 
 });

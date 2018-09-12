@@ -211,8 +211,71 @@ class Product extends Model
                                FROM tb_categories a 
                               INNER JOIN tb_productscategories b ON a.idcategory = b.idcategory 
                               WHERE b.idproduct = :idproduct", [
-                                  ':idproduct' => $this->getidproduct()
+            ':idproduct' => $this->getidproduct()
         ]);
+
+    }
+
+    /**
+     * 
+     * @param type $page
+     * @param type $itemsPerPage
+     * @return type
+     */
+    public static function getProductsPage($page = 1, $itemsPerPage = 10)
+    {
+
+        $start = ($page - 1) * $itemsPerPage;
+
+        $sql = new Sql();
+
+        $results = $sql->select("
+            SELECT SQL_CALC_FOUND_ROWS *
+            FROM tb_products 
+            ORDER BY desproduct
+            LIMIT $start, $itemsPerPage;
+        ");
+
+        $resultTotal = $sql->select("SELECT found_rows() AS nrtotal;");
+
+        return [
+            'data' => $results,
+            'total' => (int)$resultTotal[0]["nrtotal"],
+            'pages' => ceil($resultTotal[0]["nrtotal"] / $itemsPerPage)
+        ];
+
+    }
+
+    /**
+     * 
+     * @param type $page
+     * @param type $itemsPerPage
+     * @return type
+     */
+    public static function getProductsPageSearch($search, $page = 1, $itemsPerPage = 10)
+    {
+
+        $start = ($page - 1) * $itemsPerPage;
+
+        $sql = new Sql();
+
+        $results = $sql->select("
+            SELECT SQL_CALC_FOUND_ROWS *
+            FROM tb_products
+            WHERE desproduct LIKE :search 
+            ORDER BY desproduct
+            LIMIT $start, $itemsPerPage;
+        ", [
+            ':search' => '%' . $search . '%'
+        ]);
+
+        $resultTotal = $sql->select("SELECT found_rows() AS nrtotal;");
+
+        return [
+            'data' => $results,
+            'total' => (int)$resultTotal[0]["nrtotal"],
+            'pages' => ceil($resultTotal[0]["nrtotal"] / $itemsPerPage)
+        ];
 
     }
 
