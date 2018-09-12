@@ -99,10 +99,45 @@ $app->get('/admin/orders', function () {
 
     User::verifyLogin();
 
+    // se a variável $search existir, retorna ela mesma, caso contrário retorna vazio
+	$search = (isset($_GET['search'])) ? $_GET['search'] : ''; 
+	
+	// definindo a página atual
+	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 1;
+
+	if ($search != '') {
+
+		$pagination = Order::getOrdersPageSearch($search, $page);
+		
+	} else {
+		
+		$pagination = Order::getOrdersPage($page);
+	}
+
+	// var_dump($pagination['data']);
+	// exit;
+
+	$pages = [];
+
+	for ($i=0; $i < $pagination['pages']; $i++) 
+	{ 
+
+		array_push($pages, [
+			'href' => '/admin/orders?' . http_build_query([
+				'page' => $i + 1,
+				'search' => $search
+			]),
+			'text' => $i + 1
+		]);
+
+	}
+
     $page = new PageAdmin();
 
     $page->setTpl("orders", [
-        'orders' => Order::listAll()
+        'orders' => $pagination['data'],
+        'search' => $search,
+        'pages' => $pages
     ]);
 
 });
