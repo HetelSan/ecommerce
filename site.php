@@ -254,8 +254,38 @@ $app->post('/checkout', function () {
 
 	$order->save();
 
-	header("Location: /order/" . $order->getidorder());
+	header("Location: /order/" . $order->getidorder() . "/pagseguro");
 	exit;
+
+});
+
+$app->get('/order/:idorder/pagseguro', function ($idorder) {
+
+	User::verifyLogin(false);
+
+	$order = new Order();
+
+	$order->get((int)$idorder);
+
+	$cart = $order->getCart();
+
+	$page = new Page([
+		'header' => false,
+		'footer' => false
+	]);
+
+	// var_dump($order->getValues());
+	// exit;
+
+	$page->setTpl("payment-pagseguro", [
+		'order' => $order->getValues(),
+		'cart' => $cart->getValues(),
+		'products' => $cart->getProducts(),
+		'phone' => [
+			'areaCode' => substr($order->getnrphone(), 0, 2),
+			'number' => substr($order->getnrphone(), 2, strlen($order->getnrphone()))
+		]
+	]);
 
 });
 
@@ -608,7 +638,7 @@ $app->get('/profile/orders/:idorder', function ($idorder) {
 
 });
 
-$app->get('/profile/change-password', function(){
+$app->get('/profile/change-password', function () {
 
 	User::verifyLogin(false);
 
@@ -621,7 +651,7 @@ $app->get('/profile/change-password', function(){
 
 });
 
-$app->post('/profile/change-password', function(){
+$app->post('/profile/change-password', function () {
 
 	User::verifyLogin(false);
 
@@ -646,7 +676,7 @@ $app->post('/profile/change-password', function(){
 		User::setError("Confirme a nova senha.");
 		header("Location: /profile/change-password");
 		exit;
-		
+
 	}
 
 	if ($_POST['current_pass'] === $_POST['new_pass']) {
@@ -654,7 +684,7 @@ $app->post('/profile/change-password', function(){
 		User::setError("A sua nova senha deve ser diferente da atual.");
 		header("Location: /profile/change-password");
 		exit;
-		
+
 	}
 
 	$user = User::getFromSession();
